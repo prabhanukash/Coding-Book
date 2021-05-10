@@ -1,2 +1,2 @@
 # Coding-Book
-this will contain the codes regarding algortihms which i have worked on in competetive programming 
+This will contain the cpp codes regarding algortihms which i have worked on in competetive programming 
