@@ -80,6 +80,7 @@ void solve()
 			}
 		}
 	}
+	cout << ans << '\n';
 
 }
 
