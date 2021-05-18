@@ -32,7 +32,7 @@ void fast()
 }
 //----------------------------------------FUNCTIONS-------------------------------------
 const ll N = (ll)(1 * 1e6 + 5);
-/*Question : we will be given an positive integer n we need to find all the possible  number of  binary strings suh that there are no
+/*Question : we will be given an positive integer n we need to find all the possible  number of  binary strings such that there are no
 consecutive ones*/
 void solve()
 {
