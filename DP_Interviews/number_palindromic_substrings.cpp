@@ -32,6 +32,9 @@ void fast()
 }
 //----------------------------------------FUNCTIONS-------------------------------------
 const ll N = (ll)(1 * 1e6 + 5);
+/*
+https://leetcode.com/problems/palindromic-substrings/
+ */
 ll lps(string s)
 {
 	ll n = s.S;
