@@ -33,6 +33,9 @@ void fast()
 //----------------------------------------FUNCTIONS-------------------------------------
 const ll N = (ll)(1 * 1e6 + 5);
 ll a[1000][100];
+/*
+https://www.geeksforgeeks.org/min-cost-path-dp-6/
+*/
 ll least_cost_path( ll n, ll m)
 {
 	if (n < 0 || m < 0) return INT_MAX;
