@@ -39,38 +39,25 @@ void solve()
 	cin >> s;
 	ll n = s.S;
 	ll dp[n];
-	dp[0] = 1;
-	fr(i, 1, n)
+	memset(dp, 0, sizeof(dp));
+	if (s[0] != '0') dp[0] = 1;
+	for (ll i = 1; i < n; i++)
 	{
-		char curr = s[i];
-		char prev = s[i - 1];
-		if (curr == '0' and prev == '0')
+		ll curr = s[i] - '0';
+		ll prev = s[i - 1] - '0';
+		if (curr == 0 and prev == 0) dp[i] = 0;
+		else if (curr != 0 and prev == 0) dp[i] = dp[i - 1];
+		else if (curr == 0 and prev != 0)
 		{
-			dp[i] = 0;
-		}
-		else if ( curr == '0' and prev != '0')
-		{
-			if (prev == '1' or prev == '2')dp[i] = (i >= 2 ? dp[i - 2] : 1);
+			if (prev == 2 or prev == 1)dp[i] += (i >= 2 ? dp[i - 2] : 1);
 			else dp[i] = 0;
-		}
-		else if (curr != '0' and prev == '0')
-		{
-			dp[i] = dp[i - 1];
 		}
 		else
 		{
-			if (stoi(s.substr(i - 1, i + 1)) < 26)
-			{
-				dp[i] = dp[i - 1] + (i >= 2 ? dp[i - 2] : 1);
-			}
-			else
-			{
-				dp[i] = dp[i - 1];
-			}
+			if (stoi(s.substr(i - 1, 2)) <= 26)dp[i] += dp[i - 1] + (i >= 2 ? dp[i - 2] : 1);
+			else dp[i] += dp[i - 1];
 		}
 	}
-	// fr(i, '0', n)cout << dp[i] << ' ';
-	// cout << '\n';
 	cout << dp[n - 1] << '\n';
 }
 
