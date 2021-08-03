@@ -39,11 +39,6 @@ void fast()
 }
 //----------------------------------------FUNCTIONS-------------------------------------
 const ll N = (ll)(1 * 1e6 + 5);
-/* longest palindromic substring
-we will be given a string we need to find the longest palindrom present as substring in the
-given string
-
-*/
 ll lps(string s)
 {
 	ll n = s.S;
