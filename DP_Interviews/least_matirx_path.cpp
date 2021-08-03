@@ -48,7 +48,6 @@ ll least_cost_path( ll n, ll m)
 	if (n == 0 and m == 0)return a[0][0];
 	return dp[n][m] = a[n - 1][m - 1] + min({least_cost_path( n - 1, m), least_cost_path( n - 1, m - 1), least_cost_path( n, m - 1)});
 }
-
 void solve()
 {
 	ll n, m;

@@ -1,4 +1,10 @@
+// Problem Link - https://www.geeksforgeeks.org/count-distinct-subsequences/
+/* By Bhanu Prakash */
 #include <bits/stdc++.h>
+//#include<ext/pb_ds/assoc_container.hpp>
+//#include<ext/pb_ds/tree_policy.hpp>
+//#include <ext/pb_ds/trie_policy.hpp>
+//using namespace __gnu_pbds;
 #define pb push_back
 #define mp make_pair
 #define ll long long int
@@ -6,14 +12,13 @@
 #define ss second
 #define S size()
 #define mod (ll)(1e9 + 7)
-#define mset(a, k) memset(a, k, sizeof(a))
+#define inf 1e18
 #define fr(i, x, y) for (ll i = x; i < y; i++)
 #define dr(i, x, y) for (ll i = x; i >= y; i--)
 #define all(v) v.begin(), v.end()
 #define allr(v) v.rbegin(), v.rend()
 #define mapcl map<char, ll>
 #define mapll map<ll, ll>
-#define mapsl map<string, ll>
 #define vi vector<ll>
 #define vs vector<string>
 #define vb vector<bool>
@@ -24,6 +29,8 @@
 #define vvi vector<vi>
 #define vvii vector<vii>
 using namespace std;
+//typedef tree<ll, null_type, less<ll>, rb_tree_tag, tree_order_statistics_node_update> pbds;
+//typedef trie<string,null_type,trie_string_access_traits<>,pat_trie_tag,trie_prefix_search_node_update> pbtrie;
 void fast()
 {
 	ios_base::sync_with_stdio(false);
@@ -40,18 +47,17 @@ void solve()
 	ll n = s.S;
 	ll dp[n + 1];
 	dp[0] = 1;
-	mapcl m;
+	unordered_map<char, ll> last_occ;
 	fr(i, 1, n + 1)
 	{
-		dp[i] = dp[i - 1] * 2;
-		if (m[s[i - 1]])
+		dp[i] = 2 * dp[i - 1];
+		if (last_occ.count(s[i - 1]))
 		{
-			ll j = m[s[i - 1]];
-			dp[i] = dp[i] - dp[j - 1];
+			ll j = last_occ[s[i - 1]];
+			dp[i] -= dp[ j - 1];
 		}
-		m[s[i - 1]] = i;
+		last_occ[s[i - 1]] = i;
 	}
-	for (auto it : m)cout << it.ff << ' ' << it.ss << '\n';
 	cout << dp[n] << '\n';
 }
 
