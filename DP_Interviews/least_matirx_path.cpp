@@ -36,16 +36,19 @@ ll a[1000][100];
 /*
 https://www.geeksforgeeks.org/min-cost-path-dp-6/
 */
+ll dp[1000][1000];
 ll least_cost_path( ll n, ll m)
 {
 	if (n < 0 || m < 0) return INT_MAX;
+	if (dp[n][m] != -1)return dp[n][m];
 	if (n == 0 and m == 0)return a[0][0];
-	return a[n][m] + min( least_cost_path( n - 1, m), least_cost_path( n, m - 1));
+	return dp[n][m] = a[n - 1][m - 1] + min({least_cost_path( n - 1, m), least_cost_path( n - 1, m - 1), least_cost_path( n, m - 1)});
 }
 void solve()
 {
 	ll n, m;
 	cin >> n >> m;
+	memset(dp, -1, sizeof(dp));
 	fr(i, 0, n)
 	{
 		fr(j, 0, m)
@@ -53,7 +56,7 @@ void solve()
 			cin >> a[i][j];
 		}
 	}
-	cout << least_cost_path(n - 1, m - 1) << '\n';
+	cout << least_cost_path(n, m) << '\n';
 }
 
 signed main()
