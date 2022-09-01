@@ -1,105 +1,81 @@
 #include <bits/stdc++.h>
-#define pb push_back
-#define mp make_pair
-#define ll long long int
-#define ff first
-#define ss second
-#define S size()
-#define mod (ll)(1e9 + 7)
-#define mset(a, k) memset(a, k, sizeof(a))
-#define fr(i, x, y) for (ll i = x; i < y; i++)
-#define dr(i, x, y) for (ll i = x; i >= y; i--)
-#define all(v) v.begin(), v.end()
-#define allr(v) v.rbegin(), v.rend()
-#define mapcl map<char, ll>
-#define mapll map<ll, ll>
-#define mapsl map<string, ll>
-#define vi vector<ll>
-#define vs vector<string>
-#define vb vector<bool>
-#define psi pair<string, ll>
-#define pii pair<ll, ll>
-#define piii pair<ll, pii>
-#define vii vector<pii>
-#define vvi vector<vi>
-#define vvii vector<vii>
 using namespace std;
-void fast()
+
+// using two pointer approach
+
+int approach2(int arr[], int n)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+	int l = 0;
+	int r = n - 1;
+	int res = 0;
+	int lmax = 0;
+	int rmax = 0;
+	while (l <= r)
+	{
+		if (arr[l] <= arr[r])
+		{
+			if (arr[l] >= lmax)
+				lmax = arr[l];
+			else
+			{
+				res += lmax - arr[l];
+			}
+			l++;
+		}
+		else
+		{
+			if (arr[r] >= rmax)
+				rmax = arr[r];
+			else
+			{
+				res += rmax - arr[r];
+			}
+			r--;
+		}
+	}
+	return res;
+	/*
+	TC:O(N)
+	SC:O(1)
+
+	 */
 }
-//----------------------------------------FUNCTIONS-------------------------------------
-const ll N = (ll)(1 * 1e6 + 5);
-const ll LOGN = 25;
-char a[1000][1000];
-ll appraoch_2(ll arr[], ll n)
+
+// using prefix max and suffix max
+int approach1(int arr[], int n)
 {
-	ll low = 0, high = n - 1;
-	ll left_max = 0, right_max = 0;
-	ll ans = 0;
-	while (low <= high) {
-		if (arr[low] < arr[high]) {
-			if (arr[low] > left_max)
-				// update max in left
-				left_max = arr[low];
-			else
-				// water on curr element = max - curr
-				ans += left_max - arr[low];
-			low++;
-		}
-		else {
-			if (arr[high] > right_max)
-				// update right maximum
-				right_max = arr[high];
-			else
-				ans += right_max - arr[high];
-			high--;
-		}
+	int lmax[n];
+	int rmax[n];
+	lmax[0] = arr[0];
+	rmax[n - 1] = arr[n - 1];
+	for (int i = 1; i < n; i++)
+		lmax[i] = max(lmax[i - 1], arr[i]);
+
+	for (int i = n - 2; i >= 0; i--)
+		rmax[i] = max(rmax[i + 1], arr[i]);
+	int ans = 0;
+	for (int i = 0; i < n; i++)
+	{
+		ans += min(lmax[i], rmax[i]) - arr[i];
 	}
 	return ans;
-
+	/*
+	TC:O(3*N)
+	SC:O(2*N)
+	 */
 }
-void solve()
+int main()
 {
-	ll n;
-	cin >> n;
-	ll a[n];
-	fr(i, 0, n)cin >> a[i];
-	cout << appraoch_2(a, n) << '\n';
-	/*ll pref_max[n], suff_max[n];
-	pref_max[0] = a[0];
-	ff_max[n - 1] = a[n - 1];
-	/*fr(i, 1, n)
-	{
-		pref_max[i] = max(pref_max[i - 1], a[i]);
-	}
-	for (ll i = n - 2; i >= 0; i--)
-	{
-		suff_max[i] = max(suff_max[i + 1], a[i]);
-	}
-	/*fr(i, 0, n)cout << suff_max[i] << ' ';
-	cout << '\n';
-	fr(i, 0, n)cout << pref_max[i] << ' ';
-	ll ans = 0;
-	fr(i, 0, n)
-	{
-		ans += min(pref_max[i], suff_max[i]) - a[i];
-	}
-	cout << ans << '\n'; */
-}
-signed main()
-{
-	fast();
 #ifndef ONLINE_JUDGE
-	freopen ("inp.txt", "r", stdin);
-	freopen ("out.txt", "w", stdout);
+	freopen("inp.txt", "r", stdin);
+	freopen("out.txt", "w", stdout);
 #endif
-	ll t = 1;
-	//cin >> t;
-	fr(i, 0, t)
-	{
-		solve();
-	}
+	int n;
+	cin >> n;
+	int arr[n];
+	for (int i = 0; i < n; i++)
+		cin >> arr[i];
+	cout << approach1(arr, n) << '\n';
+	cout << approach2(arr, n) << '\n';
+	return 0;
 }
