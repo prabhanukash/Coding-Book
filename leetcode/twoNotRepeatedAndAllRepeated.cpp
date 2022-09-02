@@ -7,16 +7,21 @@ pair<int, int> getTwoNumbers(int arr[], int n)
   int xor_val = 0;
   for (int i = 0; i < n; i++)
     xor_val ^= arr[i];
-  int RMSB_val = xor_val & ~(xor_val-1);
+  int RMSB_val = xor_val & ~(xor_val - 1);
   int x = 0, y = 0;
-  for(int i = 0; i < n; i++){
-    if(arr[i]&RMSB_val)
+  for (int i = 0; i < n; i++)
+  {
+    if (arr[i] & RMSB_val)
       x ^= arr[i];
-      else
-        y ^= arr[i];
+    else
+      y ^= arr[i];
   }
   ans = {x, y};
   return ans;
+  /*
+  TC:O(N)
+  SC:O(1)
+   */
 }
 int main()
 {
