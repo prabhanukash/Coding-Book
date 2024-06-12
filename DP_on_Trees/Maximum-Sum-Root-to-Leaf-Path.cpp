@@ -1,30 +1,20 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-const int N = 1e6 + 5;
+const int N = (1 * 1e6 + 5);
 vector<int> adj[N];
-int dp[N]; // dp[i] represents min time to spread fire among each node in its subtree
-void dfs(int v, int p)
+int dp[N], values[N];
+void dfs(int v, int p = -1)
 {
-  vector<int> child_values;
-
+  dp[v] = values[v];
+  int mx = 0;
   for (int nb : adj[v])
   {
     if (nb == p)
       continue;
     dfs(nb, v);
-    child_values.push_back(dp[nb]);
+    mx = max(mx, dp[nb]);
   }
-  sort(child_values.rbegin(), child_values.rend());
-
-  int secs = 1;
-  dp[v] = 0;
-
-  for (int val : child_values)
-  {
-    dp[v] = max(val + secs, dp[v]);
-    secs++;
-  }
+  dp[v] += mx;
 }
 int main()
 {
@@ -34,6 +24,10 @@ int main()
 #endif
   int n;
   cin >> n;
+  for (int i = 1; i <= n; i++)
+  {
+    cin >> values[i];
+  }
   for (int i = 1; i < n; i++)
   {
     int u, v;
@@ -41,6 +35,8 @@ int main()
     adj[u].push_back(v);
     adj[v].push_back(u);
   }
+
   dfs(1, 0);
-  cout << dp[1] << endl;
+  cout << dp[1] << ' ';
+  return 0;
 }

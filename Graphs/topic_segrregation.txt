@@ -1,0 +1,49 @@
+Graphs
+
+  DFS Algorithm
+    Connected Components (Undirected Graph)
+    https://leetcode.com/problems/surrounded-regions/description/?envType=study-plan-v2&envId=top-interview-150
+    
+    completed:
+      https://leetcode.com/problems/coloring-a-border/description/ 
+      https://leetcode.com/problems/flood-fill/
+      https://leetcode.com/problems/max-area-of-island/description/ 
+      https://leetcode.com/problems/number-of-islands/description/
+      https://leetcode.com/problems/number-of-provinces/description/
+      https://leetcode.com/problems/keys-and-rooms/description/
+      https://leetcode.com/problems/number-of-enclaves/description/
+      https://leetcode.com/problems/number-of-closed-islands/description/
+
+
+
+  BFS Algorithm
+    https://leetcode.com/problems/rotting-oranges/
+    Minimum Knight Moves
+    https://leetcode.com/problems/pacific-atlantic-water-flow/description/
+  
+  DFS + BFS 
+    https://leetcode.com/problems/shortest-bridge/description/
+
+  Tarjan's Algorithm
+    Bridges
+    Articulation Points
+
+  Trees + DP
+
+
+  0-1 BFS Algorithm
+  Topological Sort(Khans Algorithm)
+  Dijisktra Algorithm
+  Union Find Algorithm
+  Kosaraju Algorithm
+
+
+  Topics to Revise
+    Single Source Shortest Path Algorithm
+    BellmanFord Algorithm
+    FloydWarshall Algorithm
+    Prims Algorithm
+    kruskal Algorithm
+
+
+
