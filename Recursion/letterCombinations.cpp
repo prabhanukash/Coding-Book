@@ -1,46 +1,29 @@
 #include <bits/stdc++.h>
 using namespace std;
-void solve(string digit, string output, int index, vector<string> &ans, string mapping[])
+void f(string str, int i, string osf, vector<string> &result, vector<string> &v)
 {
-
-  if (index >= digit.size())
+  if (i == str.size())
   {
-    ans.push_back(output);
+    result.push_back(osf);
     return;
   }
-
-  int number = digit[index] - '0';
-  string value = mapping[number];
-
-  for (int i = 0; i < value.size(); i++)
+  int digit = str[i] - '0';
+  if (digit <= 1)
   {
-    output.push_back(value[i]);
-    solve(digit, output, index + 1, ans, mapping);
-    output.pop_back();
+    f(str, i + 1, osf, result, v);
   }
-}
-vector<string> letterCombinations(string digits)
-{
-  vector<string> ans;
-  if (digits.size() == 0)
-    return ans;
-  string output = "";
-  int index = 0;
-
-  string mapping[10] = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-
-  solve(digits, output, index, ans, mapping);
-
-  return ans;
+  for (int j = 0; j < v[digit].size(); j++)
+  {
+    f(str, i + 1, osf + v[digit][j], result, v);
+  }
+  return;
 }
 int main()
 {
-#ifndef ONLINE_JUDGE
-    freopen("inp.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-#endif
-    vector<string> ans = letterCombinations("2");
-    for(string str:ans)
-        cout << str << ' ';
-    return 0;
+  vector<string> v(10);
+  v = {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tvu", "wxyz"};
+  vector<string> ans;
+  f("258", 0, "", ans, v);
+  for (string str : ans)
+    cout << str << endl;
 }

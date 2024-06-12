@@ -1,0 +1,9 @@
+{
+    "cmake.buildTask": true,
+    "files.associations": {
+        "iostream": "cpp",
+        "valarray": "cpp",
+        "sstream": "cpp",
+        "regex": "cpp"
+    }
+}

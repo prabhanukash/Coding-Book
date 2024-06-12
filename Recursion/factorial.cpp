@@ -57,17 +57,6 @@ void pattern1(int n, int i)
     pattern1(n - 1, 0);
   }
 }
-void printSubset(int *arr, int n, int i, string osf)
-{
-  if (i == n)
-  {
-    cout << "[" + osf + "]" << endl;
-
-    return;
-  }
-  printSubset(arr, n, i + 1, osf + to_string(arr[i]) + ",");
-  printSubset(arr, n, i + 1, osf);
-}
 
 void printNoConsecutiveOnes(int n, int i, string osf)
 {
@@ -136,65 +125,7 @@ void generateFriendPairings(int n)
   printPairingCombinations(friends, used, "");
 }
 
-int totalPaths = 0;
-void printPossiblePathsInMaze(int n, int m, int i, int j, string osf)
-{
-  if (i >= n or j >= m)
-    return;
-  if (i == n - 1 && j == m - 1)
-  {
-    totalPaths++;
-    cout << osf << endl;
-    return;
-  }
-  printPossiblePathsInMaze(n, m, i, j + 1, osf + "R");
-  printPossiblePathsInMaze(n, m, i + 1, j, osf + "D");
-  printPossiblePathsInMaze(n, m, i + 1, j + 1, osf + "->");
-}
 
-void printAllPossiblePathsOfDiceJumps(int n, int i, string osf)
-{
-  if (i >= n)
-    return;
-  if (i == n - 1)
-  {
-    cout << osf << endl;
-    return;
-  }
-  for (int j = 1; j <= 6; j++)
-  {
-    printAllPossiblePathsOfDiceJumps(n, i + j, osf + to_string(j) + "->");
-  }
-}
-void printLexico(int n, int i)
-{
-  if (n < i)
-    return;
-  cout << i << endl;
-  for (int j = (i == 0) ? 1 : 0; j <= 9; j++)
-  {
-    printLexico(n, 10 * i + j);
-  }
-}
-void printStringPermutations(string str, string osf)
-{
-  if (str.size() == 0)
-  {
-    cout << osf << endl;
-    return;
-  }
-  unordered_set<char> st;
-  for (int i = 0; i < str.size(); i++)
-  {
-    char ch = str[i];
-    if (st.count(ch) == 0)
-    {
-      string ros = str.substr(0, i) + str.substr(i + 1);
-      st.insert(ch);
-      printStringPermutations(ros, osf + ch);
-    }
-  }
-}
 int sumOfDigits(int n)
 {
   if (n >= 0 && n <= 9)
