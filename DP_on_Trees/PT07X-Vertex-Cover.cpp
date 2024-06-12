@@ -14,7 +14,7 @@ void dfs(int v, int p)
       continue;
     dfs(nb, v);
     dp[v][0] += dp[nb][1];
-    dp[v][1] += dp[nb][0];
+    dp[v][1] += min(dp[nb][0],dp[nb][1]);
   }
 }
 int main()

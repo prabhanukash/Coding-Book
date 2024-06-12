@@ -4,6 +4,8 @@ class UnionFind
 {
   int *pr;
   int *sz;
+
+public:
   UnionFind(int n)
   {
     pr = new int[n + 1];
@@ -16,7 +18,7 @@ class UnionFind
   }
   int root(int i)
   {
-    if (pr[i] == i)
+    if (i == pr[i])
       return i;
     return pr[i] = root(pr[pr[i]]);
   }
@@ -37,9 +39,34 @@ class UnionFind
     return 1;
   }
 };
-
 int main()
 {
+// #ifndef ONLINE_JUDGE
+//       freopen("inp.txt", "r", stdin);
+//   freopen("out.txt", "w", stdout);
+// #endif
+  int n, q;
+  cin >> n >> q;
+  UnionFind uf(n);
+  while (q--)
+  {
+    string s;
+    cin >> s;
+    int u, v;
+    cin >> u >> v;
+    if (s == "get")
+    {
 
-  return 0;
+      if (uf.find(u, v))
+      {
+        cout << "YES\n";
+      }
+      else
+        cout << "NO\n";
+    }
+    else
+    {
+      uf.un(u, v);
+    }
+  }
 }

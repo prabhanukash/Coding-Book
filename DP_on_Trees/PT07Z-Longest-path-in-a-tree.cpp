@@ -1,20 +1,16 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int N = 1e6 + 5;
-vector<int> adj[N];
-int dp[N][2];
-
-void dfs(int v, int p)
+vector<vector<int>> adj;
+int maxDist, maxNode;
+void dfs(int v, int p, int d)
 {
-  dp[v][0] = 0;
-  dp[v][1] = 1;
+  if (d > maxDist)
+    maxDist = d, maxNode = v;
   for (int nb : adj[v])
   {
     if (nb == p)
       continue;
-    dfs(nb, v);
-    dp[v][0] += dp[nb][1];
-    dp[v][1] += dp[nb][0];
+    dfs(nb, v, d + 1);
   }
 }
 int main()
@@ -25,7 +21,7 @@ int main()
 // #endif
   int n;
   cin >> n;
-
+  adj.resize(n + 1);
   for (int i = 1; i < n; i++)
   {
     int u, v;
@@ -33,6 +29,10 @@ int main()
     adj[u].push_back(v);
     adj[v].push_back(u);
   }
-  dfs(1, 0);
-  cout << min(dp[1][0], dp[1][1]) << endl;
+  maxDist = -1;
+  dfs(1, 0, 0);
+  maxDist = -1;
+  dfs(maxNode, 0, 0);
+  cout << maxDist << endl;
+  return 0;
 }

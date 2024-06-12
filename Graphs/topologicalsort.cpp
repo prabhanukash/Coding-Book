@@ -2,7 +2,8 @@
 using namespace std;
 const int N = 1e6 + 5;
 vector<int> adj[N];
-bool visited[N];
+int indeg[N];
+
 int main()
 {
 #ifndef ONLINE_JUDGE
@@ -16,11 +17,16 @@ int main()
     int u, v;
     cin >> u >> v;
     adj[u].push_back(v);
-    adj[v].push_back(u);
+    indeg[v]++;
   }
-  queue<int> q;
-  q.push(1);
-  visited[1] = true;
+  queue<int> q; 
+  for (int i = 0; i <n; i++)
+  {
+    if (indeg[i] == 0)
+    {
+      q.push(i);
+    }
+  }
   while (!q.empty())
   {
     int v = q.front();
@@ -28,9 +34,9 @@ int main()
     cout << v << ' ';
     for (int nb : adj[v])
     {
-      if (visited[nb] == false)
+      indeg[nb]--;
+      if (indeg[nb] == 0)
       {
-        visited[nb] = true;
         q.push(nb);
       }
     }
