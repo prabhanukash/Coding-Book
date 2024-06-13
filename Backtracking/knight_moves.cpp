@@ -1,101 +1,48 @@
 #include <bits/stdc++.h>
-#define pb push_back
-#define mp make_pair
-#define ll long long int
-#define ff first
-#define ss second
-#define S size()
-#define mod (ll)(1e9 + 7)
-#define mset(a, k) memset(a, k, sizeof(a))
-#define fr(i, x, y) for (ll i = x; i < y; i++)
-#define dr(i, x, y) for (ll i = x; i >= y; i--)
-#define all(v) v.begin(), v.end()
-#define allr(v) v.rbegin(), v.rend()
-#define mapcl map<char, ll>
-#define mapll map<ll, ll>
-#define mapsl map<string, ll>
-#define vi vector<ll>
-#define vs vector<string>
-#define vb vector<bool>
-#define psi pair<string, ll>
-#define pii pair<ll, ll>
-#define piii pair<ll, pii>
-#define vii vector<pii>
-#define vvi vector<vi>
-#define vvii vector<vii>
 using namespace std;
-void fast()
+bool isItSafe(vector<vector<int>> &arr, int n, int i, int j, vector<vector<bool>> &visited)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+	return (i >= 0 and j >= 0 and i < n and j < n and visited[i][j] == false);
 }
-//----------------------------------------FUNCTIONS-------------------------------------
-const ll N = (ll)(1 * 1e6 + 5);
-ll n;
-bool isSafe(vector<vector<int> >&grid, vector < vector<bool>> &vis, ll i, ll j, ll n)
+void display(vector<vector<int>> &arr, int n)
 {
-	return (i >= 0 and j >= 0 and j < n and i < n and vis[i][j] == false);
-}
-void displayGrid(vector<vector<int>>&grid)
-{
-	fr(i, 0, n)
+	for (int i = 0; i < n; i++)
 	{
-		fr(j, 0, n)
+		for (int j = 0; j < n; j++)
 		{
-			cout << grid[i][j] << ' ';
+			cout << arr[i][j] << ' ';
 		}
-		cout << '\n';
+		cout << endl;
 	}
 }
-void canCoverKnight(vector < vector<int> >&grid, vector < vector<bool> > &vis, ll count, ll x, ll y, ll n)
+void printKnightsTour(vector<vector<int>> &arr, int n, int i, int j, int cnt, vector<vector<bool>> &visited)
 {
-	if (count == n * n - 1)
+	if (cnt == n * n - 1)
 	{
-		grid[x][y] = count;
-		displayGrid(grid);
-		cout << '\n';
-
+		arr[i][j] = cnt;
+		display(arr, n);
+		cout << "\n\n";
 		return;
 	}
-	if (count >= n * n)return;
-	ll dx[8] = { -2, -2, -1, -1, 2, 2, 1, 1};
-	ll dy[8] = {1, -1, 2, -2, 1, -1, 2, -2};
-	vis[x][y] = true;
-	grid[x][y] = true;
-	grid[x][y] = count;
-	fr (i, 0, 8)
+	int dx[8] = {-2, -2, -1, -1, 2, 2, 1, 1};
+	int dy[8] = {1, -1, 2, -2, 1, -1, 2, -2};
+	visited[i][j] = true;
+	arr[i][j] = cnt;
+	for (int k = 0; k < 8; k++)
 	{
-		ll X = dx[i] + x;
-		ll Y = dy[i] + y;
-		if (isSafe(grid, vis, X, Y, n))
+		if (isItSafe(arr, n, i + dx[k], j + dy[k], visited))
 		{
-			canCoverKnight(grid, vis, count + 1, X, Y, n);
+			printKnightsTour(arr, n, i + dx[k], j + dy[k], cnt + 1, visited);
 		}
 	}
-	grid[x][y] = -1;
-	vis[x][y] = false;
+	arr[i][j] = -1;
+	visited[i][j] = false;
 }
-void solve()
+int main()
 {
-	//ll n;
+	int n;
 	cin >> n;
-	vector < vector<int> > grid(n, vector<int> (n, -1));
-	vector < vector<bool> > vis(n, vector<bool>(n, false));
-	canCoverKnight(grid, vis, 0, 0, 0, n);
-}
-
-signed main()
-{
-	fast();
-#ifndef ONLINE_JUDGE
-	freopen ("inp.txt", "r", stdin);
-	freopen ("out.txt", "w", stdout);
-#endif
-	ll t = 1;
-	//	cin >> t;
-	fr(i, 0, t)
-	{
-		solve();
-	}
+	vector<vector<int>> arr(n, vector<int>(n, -1));
+	vector<vector<bool>> visited(n, vector<bool>(n, false));
+	printKnightsTour(arr, n, 0, 0, 0, visited);
 }
