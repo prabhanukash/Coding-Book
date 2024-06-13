@@ -1,120 +1,51 @@
 #include <bits/stdc++.h>
-#define pb push_back
-#define mp make_pair
-#define ll long long int
-#define ff first
-#define ss second
-#define S size()
-#define mod (ll)(1e9 + 7)
-#define mset(a, k) memset(a, k, sizeof(a))
-#define fr(i, x, y) for (ll i = x; i < y; i++)
-#define dr(i, x, y) for (ll i = x; i >= y; i--)
-#define all(v) v.begin(), v.end()
-#define allr(v) v.rbegin(), v.rend()
-#define mapcl map<char, ll>
-#define mapll map<ll, ll>
-#define mapsl map<string, ll>
-#define vi vector<ll>
-#define vs vector<string>
-#define vb vector<bool>
-#define psi pair<string, ll>
-#define pii pair<ll, ll>
-#define piii pair<ll, pii>
-#define vii vector<pii>
-#define vvi vector<vi>
-#define vvb vector<vb>
-#define vvii vector<vii>
 using namespace std;
-void fast()
+int totalPaths = 0;
+bool isSafe(int n, int m, int i, int j, vector<vector<bool>> &visited)
 {
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+	return i >= 0 and i < n and j >= 0 and j < m and visited[i][j] == false;
 }
-//----------------------------------------FUNCTIONS-------------------------------------
-const ll N = (ll)(1 * 1e6 + 5);
-void displayGrid(vvb &vis, ll n)
+void helper(int n, int m, vector<vector<int>> &arr, int i, int j, vector<vector<bool>> &visited)
 {
-	fr(i, 0, n)
+	if (i == n - 1 and j == m - 1)
 	{
-		fr(j, 0, n)
-		{
-			if (vis[i][j])cout << 1 << ' ';
-			else cout << 0 << ' ';
-		}
-
-		cout << '\n';
-	}
-}
-ll totPaths;
-bool isSafe(ll i, ll j, ll n, ll m, vector<vector<bool>> &vis)
-{
-	return (i >= 0 && i < n && j >= 0 && j < m && vis[i][j] == false);
-}
-void helper(ll i, ll j, ll n, ll m, vector <vector<char>> &grid, vvb &vis)
-{
-	if (i == n - 1 && j == m - 1)
-	{
-		totPaths++;
-		//displayGrid(vis, n);
+		totalPaths++;
 		return;
 	}
-	if (not isSafe(i, j, n, m, vis))return;
-	vis[i][j] = true;
-	if (i + 1 < n and grid[i + 1][j] == '.') // down
-	{
-		helper(i + 1, j, n, m, grid, vis);
-	}
-	if (j + 1 < m and grid[i][j + 1] == '.') // right
-	{
-		helper(i , j + 1, n, m, grid, vis);
-	}
-	// if (i - 1 >= 0 and grid[i - 1][j] == 0) // up
-	// {
-	// 	helper(i - 1, j, n, grid, vis);
-	// }
-	// if (j - 1 >= 0 and grid[i][j - 1] == 0) // left
-	// {
-	// 	helper(i, j - 1, n, grid, vis);
-	// }
-	vis[i][j] = false;
+	if (not isSafe(n, m, i, j, visited))
+		return;
+	visited[i][j] = true;
+	if (j - 1 >= 0 and arr[i][j - 1] == 0)
+		helper(n, m, arr, i, j - 1, visited);
+	if (i + 1 < n and arr[i + 1][j] == 0)
+		helper(n, m, arr, i + 1, j, visited);
+	if (j + 1 < m and arr[i][j + 1] == 0)
+		helper(n, m, arr, i, j + 1, visited);
+	if (i - 1 >= 0 and arr[i - 1][j] == 0)
+		helper(n, m, arr, i - 1, j, visited);
+	visited[i][j] = false;
 	return;
-
 }
-ll countRatMaze( vector < vector<char>> &grid)
+int countPathsInMaze(vector<vector<int>> &maze)
 {
-	ll n = grid.size();
-	ll m = grid[0].size();
-	vvb vis(n, vector<bool>(m, false));
-	helper(0, 0, n, m, grid, vis);
-	return totPaths;
+	int n = maze.size();
+	int m = maze[0].size();
+	vector<vector<bool>> visited(n, vector<bool>(m, false));
+	helper(n, m, maze, 0, 0, visited);
+	return totalPaths;
 }
-void solve()
+int main()
 {
-	ll n, m;
+	int n, m;
 	cin >> n >> m;
-	vector < vector<char>> grid(n, vector <char> (m));
-	fr(i, 0, n)
+	vector<vector<int>> arr(n, vector<int>(m));
+	for (int i = 0; i < n; i++)
 	{
-		fr(j, 0, m)
+		for (int j = 0; j < m; j++)
 		{
-			cin >> grid[i][j];
+			cin >> arr[i][j];
 		}
 	}
-	cout << countRatMaze(grid) << '\n';
-}
-
-signed main()
-{
-	fast();
-#ifndef ONLINE_JUDGE
-	freopen ("inp.txt", "r", stdin);
-	freopen ("out.txt", "w", stdout);
-#endif
-	ll t = 1;
-//	cin >> t;
-	fr(i, 0, t)
-	{
-		solve();
-	}
+	cout << countPathsInMaze(arr) << endl;
+	return 0;
 }
