@@ -39,12 +39,9 @@ void f1(vector<int> &nums, int idx, vector<vector<int>> &ans)
 int main()
 {
     vector<int> nums(3);
-    nums = {1,2,3};
+    nums = {1,2,3,4};
     vector<vector<int>> ans;
-    // vector<int> perm;
-    // vector<bool> used(nums.size(), false);
 
-    // f(nums, perm, ans, used);
     f1(nums, 0, ans);
     for(vector<int>& v:ans){
         cout << "[";
