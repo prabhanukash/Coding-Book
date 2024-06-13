@@ -38,6 +38,8 @@ public:
 int main()
 {
     Solution solution;
+    int n;
+    cin >> n;
     vector<string> ans = solution.getStroboGrammaticStrings(n);
     for (string str : ans)
         cout << str << ' ';
