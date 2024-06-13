@@ -60,5 +60,7 @@ int main()
 	vector<vector<bool>> arr(n, vector<bool>(n));
 	countNQueen(arr, 0, n);
 	cout << countWays << endl;
+	// SC: O(N^2)
+	// TC: O(N!)
 	return 0;
 }
