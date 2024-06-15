@@ -9,32 +9,33 @@ class Solution
 public:
 	int search(vector<int> &nums, int target)
 	{
+		int n = nums.size();
 		int l = 0;
-		int r = nums.size() - 1;
+		int r = n - 1;
 		while (l <= r)
 		{
 			int m = (l + r) >> 1;
 			if (target == nums[m])
 				return m;
 			if (nums[l] <= nums[m])
-			{
-				if (target <= nums[m] and target >= nums[l])
+			{ // left half is strictly increasing
+				if (target >= nums[l] and nums[m] >= target)
 				{
 					r = m - 1;
 				}
 				else
-				{
-					l = m + 1;
+				{// IDI
+							l = m + 1;
 				}
 			}
 			else
-			{
-				if (target >= nums[m] and target <= nums[r])
+			{ // right half strictly increasing
+				if (target >= nums[m] and nums[r] >= target)
 				{
 					l = m + 1;
 				}
 				else
-				{
+				{ // IDI
 					r = m - 1;
 				}
 			}
