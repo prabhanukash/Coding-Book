@@ -1,6 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct Person
+{
+	string name;
+	int age;
+
+	// Constructor
+	Person(string name, int age) : name(move(name)), age(age) {}
+
+	// Default constructor
+	Person() : age(0) {}
+};
 template <typename T>
 class Vector
 {
@@ -88,16 +99,20 @@ public:
 	{
 		if (size == capacity)
 		{
-			if (capacity == 0)
-			{
-				resize(1);
-			}
-			else
-			{
-				resize(capacity * 2);
-			}
+			resize(capacity == 0 ? 1 : capacity * 2);
 		}
 		data[size++] = value;
+	}
+	// Push element to the back of the vector using perfect forwarding
+	template <typename... Args>
+	void emplace_back(Args &&...args)
+	{
+		if (size == capacity)
+		{
+			resize(capacity == 0 ? 1 : capacity * 2);
+		}
+		// Construct the element in place using the constructor of T
+		new (&data[size++]) T(forward<Args>(args)...);
 	}
 
 	// Get element at index
@@ -145,5 +160,17 @@ int main()
 	Vector<int> vec5;
 	vec5 = move(vec4); // Move assignment operator
 
+	vector<Person> people;
+
+	// Using emplace_back to construct Person objects in place
+	people.emplace_back("Alice", 30);
+	people.emplace_back("Bob", 25);
+	people.emplace_back("Charlie", 40);
+
+	// Printing the vector contents
+	for (const auto &person : people)
+	{
+		cout << "Name: " << person.name << ", Age: " << person.age << endl;
+	}
 	return 0;
 }
