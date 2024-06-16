@@ -1,127 +1,91 @@
-// Problem Link -
-/* By Bhanu Prakash */
-#include <bits/stdc++.h>
-//#include<ext/pb_ds/assoc_container.hpp>
-//#include<ext/pb_ds/tree_policy.hpp>
-//#include <ext/pb_ds/trie_policy.hpp>
-//using namespace __gnu_pbds;
-#define pb push_back
-#define mp make_pair
-#define ll long long int
-#define ff first
-#define ss second
-#define S size()
-#define mod (ll)(1e9 + 7)
-#define inf 1e18
-#define fr(i, x, y) for (ll i = x; i < y; i++)
-#define dr(i, x, y) for (ll i = x; i >= y; i--)
-#define all(v) v.begin(), v.end()
-#define allr(v) v.rbegin(), v.rend()
-#define mapcl map<char, ll>
-#define mapll map<ll, ll>
-#define vi vector<ll>
-#define vs vector<string>
-#define vb vector<bool>
-#define psi pair<string, ll>
-#define pii pair<ll, ll>
-#define piii pair<ll, pii>
-#define vii vector<pii>
-#define vvi vector<vi>
-#define vvii vector<vii>
+#include <unordered_map>
+#include <list>
+#include <iostream>
+
 using namespace std;
-//typedef tree<ll, null_type, less<ll>, rb_tree_tag, tree_order_statistics_node_update> pbds;
-//typedef trie<string,null_type,trie_string_access_traits<>,pat_trie_tag,trie_prefix_search_node_update> pbtrie;
-void fast()
-{
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-}
-//----------------------------------------FUNCTIONS-------------------------------------
-const ll N = (ll)(1 * 1e6 + 5);
+
+template <typename KeyType, typename ValueType>
 class LRUCache
 {
 private:
-	ll capacity;
-	list<ll> recentList;
-	unordered_map<ll, list<ll>::iterator>position;
-	unordered_map<ll, ll> cache;
-public:
-	LRUCache(ll k)
-	{
-		capacity = k;
-	}
-	bool isPresentInCache(ll key)
-	{
-		return cache.find(key) != cache.end();
-	}
-	ll get(ll key)
-	{
-		if (isPresentInCache(key))
-		{
-			use(key);
-			return cache[key];
-		}
-		else return -1;
-	}
-	void use(ll key) {
-		if (isPresentInCache(key))
-		{
-			recentList.erase(position[key]);
-		}
-		else if (recentList.size() >= capacity)
-		{
-			ll lru = recentList.back();
-			recentList.pop_back();
-			cache.erase(lru);
-			position.erase(lru);
+	size_t capacity;
+	list<pair<KeyType, ValueType>> cacheList;
+	unordered_map<KeyType, typename list<pair<KeyType, ValueType>>::iterator> cacheMap;
 
-		}
-		recentList.push_front(key);
-		position[key] = recentList.begin();
-	}
-	void update(ll key, ll val)
+	// Move the accessed item to the front of the cacheList
+	void moveToFront(typename list<pair<KeyType, ValueType>>::iterator it)
 	{
-		use(key);
-		cache[key] = val;
+		cacheList.splice(cacheList.begin(), cacheList, it);
 	}
-	void print()
+
+public:
+	// Constructor
+	LRUCache(size_t cap) : capacity(cap) {}
+
+	// Get the value associated with the key
+	ValueType get(const KeyType &key)
 	{
-		for (auto it : recentList)
+		auto it = cacheMap.find(key);
+		if (it == cacheMap.end())
 		{
-			cout << it << ' ';
+			throw runtime_error("Key not found");
 		}
-		cout << '\n';
+		moveToFront(it->second);
+		return it->second->second;
+	}
+
+	// Put a key-value pair into the cache
+	void put(const KeyType &key, const ValueType &value)
+	{
+		auto it = cacheMap.find(key);
+		if (it != cacheMap.end())
+		{
+			// Key already exists, update the value and move it to the front
+			it->second->second = value;
+			moveToFront(it->second);
+		}
+		else
+		{
+			// Insert the new key-value pair
+			if (cacheList.size() == capacity)
+			{
+				// Cache is full, remove the least recently used item
+				cacheMap.erase(cacheList.back().first);
+				cacheList.pop_back();
+			}
+			cacheList.emplace_front(key, value);
+			cacheMap[key] = cacheList.begin();
+		}
+	}
+
+	// Display the contents of the cache (for debugging purposes)
+	void display() const
+	{
+		for (const auto &item : cacheList)
+		{
+			cout << item.first << ": " << item.second << " ";
+		}
+		cout << endl;
 	}
 };
-void solve()
+
+int main()
 {
-	LRUCache c(3);
-	c.update(1, 123);
-	c.update(2, 234);
-	c.update(1, 456);
-	c.update(3, 345);
-	c.print();
-	c.update(4, 444);
-	c.print();
-}
+	LRUCache<int, string> lruCache(3);
+	lruCache.put(1, "one");
+	lruCache.put(2, "two");
+	lruCache.put(3, "three");
 
+	cout << "Initial cache state:" << endl;
+	lruCache.display();
 
+	lruCache.get(1);
+	cout << "Cache state after accessing key 1:" << endl;
+	lruCache.display();
 
+	lruCache.put(4, "four");
+	cout << "Cache state after adding key 4:" << endl;
+	lruCache.display();
 
-
-
-signed main()
-{
-	fast();
-#ifndef ONLINE_JUDGE
-	freopen ("inp.txt", "r", stdin);
-	freopen ("out.txt", "w", stdout);
-#endif
-	ll t = 1;
-//	cin >> t;
-	fr(i, 0, t)
-	{
-		solve();
-	}
+	return 0;
 }

@@ -1,62 +1,119 @@
 #include <bits/stdc++.h>
-#define pb push_back
-#define mp make_pair
-#define ll long long int
-#define ff first
-#define ss second
-#define S size()
-#define mod (ll)(1e9 + 7)
-#define mset(a, k) memset(a, k, sizeof(a))
-#define fr(i, x, y) for (ll i = x; i < y; i++)
-#define dr(i, x, y) for (ll i = x; i >= y; i--)
-#define all(v) v.begin(), v.end()
-#define allr(v) v.rbegin(), v.rend()
-#define mapcl map<char, ll>
-#define mapll map<ll, ll>
-#define mapsl map<string, ll>
-#define vi vector<ll>
-#define vs vector<string>
-#define vb vector<bool>
-#define psi pair<string, ll>
-#define pii pair<ll, ll>
-#define piii pair<ll, pii>
-#define vii vector<pii>
-#define vvi vector<vi>
-#define vvii vector<vii>
+#include<vector>
 using namespace std;
-void fast()
-{
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-}
-//----------------------------------------FUNCTIONS-------------------------------------
-const ll N = (ll)(1 * 1e6 + 5);
-// two types of memories 1) Stack Memory 2) Heap Memory
-int a[100];
-void solve()
-{
-	//int a[10];// stack memory when  the function called it will allocate the memory and when the function completed
-	// it will deallocate the memory
-//	int a*= new int[10];
-	// stack memory is faster than heap memory
-	// we can store more elements in heap than stack
-	// delete[] a; will deallocate explicity
-	// fr(i, 0, 100)cout << (a + i) << '\n';// print the address in hexadecimal
-	// why
-}
 
-signed main()
+template <typename T>
+class Vector
 {
-	fast();
-#ifndef ONLINE_JUDGE
-	freopen ("inp.txt", "r", stdin);
-	freopen ("out.txt", "w", stdout);
-#endif
-	ll t = 1;
-//	cin >> t;
-	fr(i, 0, t)
+private:
+	T *data;		 // Pointer to the dynamically allocated array
+	size_t size;	 // Current number of elements in the array
+	size_t capacity; // Current capacity of the array
+
+	// Helper function to reallocate memory if needed
+	void resize(size_t newCapacity)
 	{
-		solve();
+		T *newData = new T[newCapacity];
+		for (size_t i = 0; i < size; ++i)
+		{
+			newData[i] = move(data[i]);
+		}
+		delete[] data;
+		data = newData;
+		capacity = newCapacity;
 	}
+
+public:
+	// Constructor
+	Vector() : data(nullptr), size(0), capacity(0) {}
+
+	// Destructor
+	~Vector()
+	{
+		delete[] data;
+	}
+
+	// Copy constructor
+	Vector(const Vector &other) : data(nullptr), size(other.size), capacity(other.capacity)
+	{
+		data = new T[capacity];
+		for (size_t i = 0; i < size; ++i)
+		{
+			data[i] = other.data[i];
+		}
+	}
+
+	// Assignment operator
+	Vector &operator=(const Vector &other)
+	{
+		if (this != &other)
+		{
+			delete[] data;
+			size = other.size;
+			capacity = other.capacity;
+			data = new T[capacity];
+			for (size_t i = 0; i < size; ++i)
+			{
+				data[i] = other.data[i];
+			}
+		}
+		return *this;
+	}
+
+	// Push element to the back of the vector
+	void push_back(const T &value)
+	{
+		if (size == capacity)
+		{
+			if (capacity == 0)
+			{
+				resize(1);
+			}
+			else
+			{
+				resize(capacity * 2);
+			}
+		}
+		data[size++] = value;
+	}
+
+	// Get element at index
+	T &operator[](size_t index)
+	{
+		if (index >= size)
+		{
+			throw std::out_of_range("Index out of range");
+		}
+		return data[index];
+	}
+
+	// Get size of the vector
+	size_t getSize() const
+	{
+		return size;
+	}
+
+	// Get capacity of the vector
+	size_t getCapacity() const
+	{
+		return capacity;
+	}
+};
+
+int main()
+{
+	Vector<int> vec;
+	vec.push_back(1);
+	vec.push_back(2);
+	vec.push_back(3);
+
+	std::cout << "Size: " << vec.getSize() << std::endl;
+	std::cout << "Capacity: " << vec.getCapacity() << std::endl;
+
+	for (size_t i = 0; i < vec.getSize(); ++i)
+	{
+		std::cout << "Element " << i << ": " << vec[i] << std::endl;
+	}
+
+	return 0;
 }
