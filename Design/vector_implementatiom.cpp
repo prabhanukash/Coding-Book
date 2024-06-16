@@ -1,5 +1,4 @@
 #include <bits/stdc++.h>
-#include<vector>
 using namespace std;
 
 template <typename T>
@@ -36,16 +35,27 @@ public:
 	// Copy constructor
 	Vector(const Vector &other) : data(nullptr), size(other.size), capacity(other.capacity)
 	{
+		cout << "inside copy constructor\n";
+
 		data = new T[capacity];
 		for (size_t i = 0; i < size; ++i)
 		{
 			data[i] = other.data[i];
 		}
 	}
+	// Move constructor
+	Vector(Vector &&other) noexcept : data(other.data), size(other.size), capacity(other.capacity)
+	{
+		cout << "inside move constructor\n";
+		other.data = nullptr;
+		other.size = 0;
+		other.capacity = 0;
+	}
 
 	// Assignment operator
 	Vector &operator=(const Vector &other)
 	{
+		cout << "inside copy assignement\n";
 		if (this != &other)
 		{
 			delete[] data;
@@ -56,6 +66,19 @@ public:
 			{
 				data[i] = other.data[i];
 			}
+		}
+		return *this;
+	}
+	// Move Assignment operator
+	Vector &operator=(Vector &&other) noexcept
+	{
+		cout << "inside move assignement \n";
+		if (this != &other)
+		{
+			// Swap internal state with the temporary object
+			swap(data, other.data);
+			swap(size, other.size);
+			swap(capacity, other.capacity);
 		}
 		return *this;
 	}
@@ -82,7 +105,7 @@ public:
 	{
 		if (index >= size)
 		{
-			throw std::out_of_range("Index out of range");
+			throw out_of_range("Index out of range");
 		}
 		return data[index];
 	}
@@ -107,13 +130,20 @@ int main()
 	vec.push_back(2);
 	vec.push_back(3);
 
-	std::cout << "Size: " << vec.getSize() << std::endl;
-	std::cout << "Capacity: " << vec.getCapacity() << std::endl;
+	cout << "Size: " << vec.getSize() << endl;
+	cout << "Capacity: " << vec.getCapacity() << endl;
 
 	for (size_t i = 0; i < vec.getSize(); ++i)
 	{
-		std::cout << "Element " << i << ": " << vec[i] << std::endl;
+		cout << "Element " << i << ": " << vec[i] << endl;
 	}
+	Vector<int> vec2 = vec; // Copy constructor
+	Vector<int> vec3;
+	vec3 = vec; // Copy assignment operator
+
+	Vector<int> vec4 = move(vec); // Move constructor
+	Vector<int> vec5;
+	vec5 = move(vec4); // Move assignment operator
 
 	return 0;
 }
