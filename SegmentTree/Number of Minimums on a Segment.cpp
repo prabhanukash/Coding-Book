@@ -24,11 +24,12 @@
 #define vb vector<bool>
 #define psi pair<string, ll>
 #define pii pair<ll, ll>
+
 #define piii pair<ll, pii>
 #define vii vector<pii>
 #define vvi vector<vi>
 #define vvii vector<vii>
-using namespace std;
+	using namespace std;
 //typedef tree<ll, null_type, less<ll>, rb_tree_tag, tree_order_statistics_node_update> pbds;
 //typedef trie<string,null_type,trie_string_access_traits<>,pat_trie_tag,trie_prefix_search_node_update> pbtrie;
 void fast()
