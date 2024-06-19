@@ -3,7 +3,13 @@
 #include <iostream>
 
 using namespace std;
-
+/*
+	Time Complexity:
+		get(key): O(1) time.
+		put(key, value): O(1) time.
+		display(): O(n) time.
+	Space Complexity: O(n).
+*/
 template <typename KeyType, typename ValueType>
 class LRUCache
 {
@@ -86,6 +92,7 @@ int main()
 	lruCache.put(4, "four");
 	cout << "Cache state after adding key 4:" << endl;
 	lruCache.display();
+
 
 	return 0;
 }
