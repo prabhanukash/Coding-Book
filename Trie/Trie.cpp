@@ -1,176 +1,164 @@
-// Problem Link -
-/* By Bhanu Prakash */
-#include <bits/stdc++.h>
-// #include<ext/pb_ds/assoc_container.hpp>
-// #include<ext/pb_ds/tree_policy.hpp>
-// #include <ext/pb_ds/trie_policy.hpp>
-// using namespace __gnu_pbds;
-#define pb push_back
-#define mp make_pair
-#define ll long long int
-#define ff first
-#define ss second
-#define S size()
-#define mod (ll)(1e9 + 7)
-#define inf 1e18
-#define fr(i, x, y) for (ll i = x; i < y; i++)
-#define dr(i, x, y) for (ll i = x; i >= y; i--)
-#define all(v) v.begin(), v.end()
-#define allr(v) v.rbegin(), v.rend()
-#define mapcl map<char, ll>
-#define mapll map<ll, ll>
-#define vi vector<ll>
-#define vs vector<string>
-#define vb vector<bool>
-#define psi pair<string, ll>
-#define pii pair<ll, ll>
-#define piii pair<ll, pii>
-#define vii vector<pii>
-#define vvi vector<vi>
-#define vvii vector<vii>
+#include <iostream>
+#include <unordered_map>
+#include <memory>
+#include <vector>
+#include <string>
+
 using namespace std;
-//typedef tree<ll, null_type, less<ll>, rb_tree_tag, tree_order_statistics_node_update> pbds;
-//typedef trie<string,null_type,trie_string_access_traits<>,pat_trie_tag,trie_prefix_search_node_update> pbtrie;
-void fast()
-{
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-}
-//----------------------------------------FUNCTIONS-------------------------------------
-const ll N = (ll)(1 * 1e6 + 5);
-class Node
+
+class TrieNode
 {
 public:
-	char data;
-	unordered_map<char, Node *> children;
-	bool isTerminal;
-	Node(char d)
-	{
-		this->data = d;
-		this->isTerminal = false;
-	}
+	unordered_map<char, shared_ptr<TrieNode>> children;
+	bool isEndOfWord;
+
+	TrieNode() : isEndOfWord(false) {}
 };
+
 class Trie
 {
-public:
-	Node *root;
-	Trie()
+private:
+	shared_ptr<TrieNode> root;
+
+	bool _delete(shared_ptr<TrieNode> current, const string &word, int depth)
 	{
-		root = new Node('\0');
-	}
-	void insert(string s)
-	{
-		Node *tmp = this->root;
-		fr(i, 0, s.S)
+		if (!current)
+			return false;
+		if (depth == word.size())
 		{
-			char ch = s[i];
-			if (tmp->children.count(ch))
-			{
-				tmp = tmp->children[ch];
-			}
-			else
-			{
-				Node *n = new Node(ch);
-				tmp->children[ch] = n;
-				tmp = n;
-			}
+			if (!current->isEndOfWord)
+				return false;
+			current->isEndOfWord = false;
+			return current->children.empty();
 		}
-		tmp->isTerminal = true;
+		char ch = word[depth];
+		if (!_delete(current->children[ch], word, depth + 1))
+			return false;
+		current->children.erase(ch);
+		return !current->isEndOfWord && current->children.empty();
 	}
-	bool search(string s)
+
+	vector<string> _getPrefixes(shared_ptr<TrieNode> current, const string &prefix) const
 	{
-		Node *tmp = this->root;
-		fr(i, 0, s.S)
+		vector<string> result;
+
+		if (!current)
+			return result;
+		if (current->isEndOfWord)
 		{
-			char ch = s[i];
-			if (tmp->children.count(ch))
+			result.push_back(prefix);
+		}
+		for (const auto &pair : current->children)
+		{
+			vector<string> childPrefixes = _getPrefixes(pair.second, prefix + pair.first);
+			result.insert(result.end(), childPrefixes.begin(), childPrefixes.end());
+		}
+		return result;
+	}
+
+public:
+	Trie() : root(make_shared<TrieNode>()) {}
+
+	void insert(const string &word)
+	{
+		if (word.empty())
+		{
+			cerr << "Cannot insert empty string." << endl;
+			throw invalid_argument("Cannot insert empty string");
+		}
+		shared_ptr<TrieNode> current = root;
+		for (char ch : word)
+		{
+			if (!current->children[ch])
 			{
-				tmp = tmp->children[ch];
+				current->children[ch] = make_shared<TrieNode>();
 			}
-			else
+			current = current->children[ch];
+		}
+		current->isEndOfWord = true;
+	}
+
+	bool search(const string &	word) const
+	{
+		if (word.empty())
+			return false;
+		shared_ptr<TrieNode> current = root;
+		for (char ch : word)
+		{
+			if (!current->children[ch])
 			{
 				return false;
 			}
+			current = current->children[ch];
 		}
-		return tmp->isTerminal == true;
+		return current->isEndOfWord;
 	}
-	void helperDFS(Node *root, string s, string osf)
+
+	void remove(const string &word)
 	{
-		if (root == NULL)
-			return;
-		if (root->isTerminal)
+		if (word.empty())
 		{
-			cout << s + osf << '\n';
+			throw invalid_argument("Cannot delete empty string");
 		}
-		for (auto it : root->children)
-		{
-			helperDFS(it.ss, s, osf + it.ff);
-		}
+		_delete(root, word, 0);
 	}
-	void getPrefixes(string s)
+
+	vector<string> startsWith(const string &prefix) const
 	{
-		Node *tmp = this->root;
-		fr(i, 0, s.S)
+		if (prefix.empty())
+			return {};
+		shared_ptr<TrieNode> current = root;
+		for (char ch : prefix)
 		{
-			char ch = s[i];
-			if (tmp->children.count(ch))
-			{
-				tmp = tmp->children[ch];
-			}
-			else
-			{
-				cout << "Query string is not present as prefix\n";
-				return;
-			}
+			if (!current->children[ch])
+				return {};
+			current = current->children[ch];
 		}
-		cout << "The Prefixe are :\n";
-		helperDFS(tmp, s, "");
+		return _getPrefixes(current, prefix);
 	}
 };
-void solve()
-{
-	Trie t;
-	ll m;
-	cin >> m;
-	while (m--)
-	{
-		string s;
-		cin >> s;
-		t.insert(s);
-	}
-	ll q;
-	cin >> q;
-	while (q--)
-	{
-		string s;
-		cin >> s;
-		if (t.search(s))
-			cout << "YES\n";
-		else
-			cout << "NO\n";
-	}
-	ll pref;
-	cin >> pref;
-	while (pref--)
-	{
-		string s;
-		cin >> s;
-		t.getPrefixes(s);
-	}
-}
 
-signed main()
+int main()
 {
-	fast();
-#ifndef ONLINE_JUDGE
-	freopen ("inp.txt", "r", stdin);
-	freopen ("out.txt", "w", stdout);
-#endif
-	ll t = 1;
-	//cin >> t;
-	fr(i, 0, t)
+	try
 	{
-		solve();
+		Trie trie;
+
+		trie.insert("apple");
+		trie.insert("app");
+		trie.insert("banana");
+
+		cout << "Searching 'apple': " << trie.search("apple") << endl;	 // true
+		cout << "Searching 'app': " << trie.search("app") << endl;		 // true
+		cout << "Searching 'ban': " << trie.search("ban") << endl;		 // false
+		cout << "Searching 'banana': " << trie.search("banana") << endl; // true
+		cout << "Prefix 'app': ";
+		auto appPrefixes = trie.startsWith("app");
+		for (const auto &prefix : appPrefixes)
+		{
+			cout << prefix << " ";
+		}
+		cout << endl;
+
+		cout << "Prefix 'ban': ";
+		auto banPrefixes = trie.startsWith("ban");
+		for (const auto &prefix : banPrefixes)
+		{
+			cout << prefix << " ";
+		}
+		cout << endl;
+
+		cout << "Prefix 'bae': ";
+		auto baePrefixes = trie.startsWith("bae");
+		for (const auto &prefix : baePrefixes)
+		{
+			cout << prefix << " ";
+		}
+		cout << endl;
 	}
+	catch (exception &e)
+	{
+		cout << e.what() << endl;
+	}
+	return 0;
 }
