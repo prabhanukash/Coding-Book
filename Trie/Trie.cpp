@@ -5,7 +5,13 @@
 #include <string>
 
 using namespace std;
-
+/*
+Insert:𝑂(𝑚) Where 𝑚 is the length of the word being inserted.
+Search:𝑂(𝑚) Where 𝑚 is the length of the word being searched.
+Delete:𝑂(𝑚) Where 𝑚 is the length of the word being deleted.
+StartsWith:𝑂(𝑚+𝑘) Where 𝑚 is the length of the prefix and 𝑘 is the number of nodes in the subtree matching the prefix.
+Space Complexity: 𝑂(𝑁⋅𝑀) Where 𝑁 is the number of words stored in the Trie, and 𝑀 is the average length of the words.
+*/
 class TrieNode
 {
 public:
@@ -78,7 +84,7 @@ public:
 		current->isEndOfWord = true;
 	}
 
-	bool search(const string &	word) const
+	bool search(const string &word) const
 	{
 		if (word.empty())
 			return false;
