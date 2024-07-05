@@ -1,0 +1,11 @@
+Log started at: 2024-07-05 16:48:38
+INFO: Shape 1: Circle
+INFO: Area: 78.539750
+INFO: Perimeter: 31.415900
+INFO: Shape 2: Rectangle
+INFO: Area: 24.000000
+INFO: Perimeter: 20.000000
+INFO: Account Number: 1234567890
+INFO: Initial Balance: 1000.000000
+INFO: Balance after deposit: 1500.000000
+INFO: Withdrawal successful. New balance: 1300.000000
