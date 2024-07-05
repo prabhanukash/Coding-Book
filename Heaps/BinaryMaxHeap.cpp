@@ -58,7 +58,7 @@ public:
     }
     int size() const { return heap.size(); }
     int isEmpty() const { return heap.empty(); }
-    int poll()
+    void pop()
     {
         if (isEmpty())
             throw out_of_range("Heap is empty, cannot poll maximum element.");
@@ -95,7 +95,7 @@ int main()
 
         cout << "Max element: " << heap.peek() << endl;
 
-        heap.poll();
+        heap.pop();
         cout << "Max element after removing the minimum: " << heap.peek() << endl;
 
         // Initialize heap from a vector
