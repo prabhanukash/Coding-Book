@@ -1,18 +1,17 @@
 #include <bits/stdc++.h>
 using namespace std;
-void printSubsets(int *arr, int idx, int n, string osf)
-{
-    if (idx == n)
-    {
-        cout << "[" + osf + "]" << endl;
-        return;
+
+void printSubsets(vector<int> & arr, int index, string osf){
+    if(index==arr.size()){
+        cout<<"["<<osf<<"]"<<endl;
+        return ;
     }
-    printSubsets(arr, idx + 1, n, osf + to_string(arr[idx]));
-    printSubsets(arr, idx + 1, n, osf);
+    printSubsets(arr, index+1, osf+to_string(arr[index]));
+    printSubsets(arr, index+1, osf);
 }
 int main()
 {
 
-    int arr[] = {1, 2, 3};
-    printSubsets(arr, 0, 3, "");
+    vector<int> arr = {1, 2, 3};
+    printSubsets(arr, 0, "");
 }
