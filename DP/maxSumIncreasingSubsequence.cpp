@@ -1,34 +1,29 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
 
-int main()
-{
-#ifndef ONLINE_JUDGE
-    freopen("inp.txt", "r", stdin);
-    freopen("out.txt", "w", stdout);
-#endif
-
-    int n;
-    cin >> n;
-    int arr[n];
-    for (int i = 0; i < n; i++)
-        cin >> arr[i];
-    int dp[n];
+int maxSumIncreasingSubsequence(int arr[], int n) {
+    vector<int> dp(n, 0);
     dp[0] = arr[0];
-    int ans = dp[0];
-    for (int i = 1; i < n; i++)
-    {
+    int ans = 1; 
+
+    for (int i = 1; i < n; i++) {
         int mx = 0;
-        for (int j = 0; j < i; j++)
-        {
-            if (arr[j] < arr[i])
-            {
-                mx = max(mx, dp[j]);
+        for (int j = 0; j < i; j++) {
+            if (arr[j] < arr[i]) { 
+                mx = max(dp[j], mx);
             }
         }
-        dp[i] = arr[i] + mx;
+        dp[i] = mx + arr[i];
         ans = max(ans, dp[i]);
     }
-    cout << ans << '\n';
+
+    return ans;
+}
+
+int main() {
+    int arr[] = {1, 101, 2, 3, 100, 4, 5};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    cout << "maxSumIncreasingSubsequence is " << maxSumIncreasingSubsequence(arr, n) << endl;
     return 0;
 }
