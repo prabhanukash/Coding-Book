@@ -16,7 +16,7 @@ private:
 public:
     int minimizedMaximum(int n, vector<int>& quantities) {
         int l = 1; // bad
-        int r = *max_element(quantities.begin(), quantities.end()); // good
+        int r = *max_element(quantities.begin(), quantities.end()); // goo
         int ans = 0;
 
        
@@ -45,3 +45,6 @@ int main() {
     cout << ans << endl; 
     return 0;
 }
+
+// Time Complexity: O(mlog(max_quantity))
+// Space Complexity: O(1)
