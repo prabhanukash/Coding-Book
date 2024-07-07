@@ -15,8 +15,8 @@ private:
 
 public:
     int minimizedMaximum(int n, vector<int>& quantities) {
-        int l = 1;
-        int r = *max_element(quantities.begin(), quantities.end());
+        int l = 1; // bad
+        int r = *max_element(quantities.begin(), quantities.end()); // good
         int ans = 0;
 
        
