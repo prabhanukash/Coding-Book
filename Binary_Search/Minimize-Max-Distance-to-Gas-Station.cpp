@@ -40,3 +40,5 @@ int main() {
   double ans = solution.minmaxGasDist(stations, k);
   cout << setprecision(10) << ans << endl;
 }
+// Time Complexity: O(nlog(max_position))
+// Space Complexity: O(1)
